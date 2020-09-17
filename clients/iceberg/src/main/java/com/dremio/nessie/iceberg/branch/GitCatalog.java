@@ -16,16 +16,22 @@
 
 package com.dremio.nessie.iceberg.branch;
 
+import java.util.Optional;
+
 /**
- * Catalog object for Branch...akin to iceberg Catalog interface
+ * Catalog object for Nessie...akin to iceberg Catalog interface
  */
-public interface BranchCatalog {
+public interface GitCatalog {
 
-  void createBranch(String branchName, String parentName);
+  void createBranch(String branchName, Optional<String> hash);
 
-  boolean dropBranch(String branchName);
+  boolean deleteBranch(String branchName, String hash);
 
-  void assignBranch(String from);
+  void createTag(String tagName, String hash);
 
-  void refreshBranch();
+  void deleteTag(String tagName, String hash);
+
+  void assignReference(String tagName, String currentHash, String targetHash);
+
+  void refresh();
 }

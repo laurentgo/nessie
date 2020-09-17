@@ -28,6 +28,7 @@ import javax.ws.rs.core.SecurityContext;
 
 import org.eclipse.microprofile.metrics.annotation.Metered;
 import org.eclipse.microprofile.metrics.annotation.Timed;
+
 import com.dremio.nessie.api.TreeApi;
 import com.dremio.nessie.error.NessieAlreadyExistsException;
 import com.dremio.nessie.error.NessieConflictException;
@@ -45,6 +46,7 @@ import com.dremio.nessie.model.NessieObjectKey;
 import com.dremio.nessie.model.ObjectsResponse;
 import com.dremio.nessie.model.Reference;
 import com.dremio.nessie.model.ReferenceUpdate;
+import com.dremio.nessie.model.ServerConfig;
 import com.dremio.nessie.model.Tag;
 import com.dremio.nessie.model.Transplant;
 import com.dremio.nessie.versioned.BranchName;
@@ -66,11 +68,15 @@ import com.google.common.collect.ImmutableList;
 @RequestScoped
 public class TreeResource extends BaseResource implements TreeApi {
 
+  private final ServerConfig config;
+
   @Inject
   public TreeResource(
       @Context SecurityContext context,
-      VersionStore<Contents, CommitMeta> store) {
+      VersionStore<Contents, CommitMeta> store,
+      ServerConfig config) {
     super(context, store);
+    this.config = config;
   }
 
   @Metered
@@ -89,6 +95,17 @@ public class TreeResource extends BaseResource implements TreeApi {
     } catch (ReferenceNotFoundException e) {
       throw new NessieNotFoundException(e);
     }
+  }
+
+  @Metered
+  @Timed(name = "timed-tree-get-defaultbranch")
+  @Override
+  public Branch getDefaultBranch() {
+    Reference r = getReferenceByName(config.getDefaultBranch());
+    if (!(r instanceof Branch)) {
+      throw new IllegalStateException("Default branch isn't a branch");
+    }
+    return (Branch) r;
   }
 
   @Metered

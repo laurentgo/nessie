@@ -104,6 +104,8 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version>
           <configuration>
+            <!-- without this, you get NPE rather than useful messages with Maven + JDK11 -->
+            <forceJavacCompilerUse>true</forceJavacCompilerUse>
             <annotationProcessorPaths>
               <path>
                 <groupId>org.immutables</groupId>

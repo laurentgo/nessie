@@ -38,6 +38,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import com.dremio.nessie.error.NessieAlreadyExistsException;
 import com.dremio.nessie.error.NessieConflictException;
 import com.dremio.nessie.error.NessieNotFoundException;
+import com.dremio.nessie.model.Branch;
 import com.dremio.nessie.model.LogResponse;
 import com.dremio.nessie.model.Merge;
 import com.dremio.nessie.model.ObjectsResponse;
@@ -73,6 +74,18 @@ public interface TreeApi {
   Reference getReferenceByName(
       @NotNull @Parameter(description = "name of ref to fetch") @PathParam("ref") String refName)
       throws NessieNotFoundException;
+
+  /**
+   * Get details for the default reference.
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("tree/default")
+  @Operation(summary = "Get default branch for commits and reads")
+  @APIResponses({
+      @APIResponse(responseCode = "404", description = "Ref not found")
+    })
+  Branch getDefaultBranch();
 
   /**
    * create a ref.
