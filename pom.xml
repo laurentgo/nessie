@@ -130,8 +130,8 @@
     <awssdk.version>2.16.95</awssdk.version>
     <bouncycastle.version>1.66</bouncycastle.version>
     <cel.version>0.2.0</cel.version>
-    <deltalake2.version>0.6.2-nessie</deltalake2.version>
-    <deltalake3.version>0.8.0-nessie</deltalake3.version>
+    <deltalake2.version>1.0.0</deltalake2.version>
+    <deltalake3.version>1.0.0</deltalake3.version>
     <dynamodb.version>1.12.0</dynamodb.version>
     <flapdoodle.version>3.0.0</flapdoodle.version>
     <gatling.maven.version>3.1.2</gatling.maven.version>
